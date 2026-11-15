@@ -5,7 +5,7 @@ package.domain = org.test
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
-requirements = python3,kivy==2.1.0,cython==0.29.33,openssl,urllib3
+requirements = python3,kivy==2.1.0,openssl
 orientation = portrait
 fullscreen = 1
 
