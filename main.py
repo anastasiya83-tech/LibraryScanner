@@ -5,7 +5,6 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.camera import Camera
 from kivy.clock import Clock
-import requests
 import io
 
 class LibraryScanner(App):
@@ -61,14 +60,29 @@ class LibraryScanner(App):
             url = f"{ip}/upload"
             
             try:
-                files = {'file': ('photo.jpg', data, 'image/jpeg')}
-                response = requests.post(url, files=files, timeout=10)
-                if response.status_code == 200:
-                    self.status_label.text = "✅ Успешно отправлено!"
-                    self.status_label.color = (0, 1, 0, 1)
-                else:
-                    self.status_label.text = f"❌ Ошибка сервера: {response.status_code}"
-                    self.status_label.color = (1, 0, 0, 1)
+                import urllib.request
+                import uuid
+                
+                boundary = uuid.uuid4().hex
+                body = []
+                body.append(f'--{boundary}'.encode())
+                body.append(b'Content-Disposition: form-data; name="file"; filename="photo.jpg"')
+                body.append(b'Content-Type: image/jpeg')
+                body.append(b'')
+                body.append(data.getvalue())
+                body.append(f'--{boundary}--'.encode())
+                body_bytes = b'\r\n'.join(body)
+                
+                req = urllib.request.Request(url, data=body_bytes)
+                req.add_header('Content-Type', f'multipart/form-data; boundary={boundary}')
+                
+                with urllib.request.urlopen(req, timeout=10) as response:
+                    if response.status == 200:
+                        self.status_label.text = "✅ Успешно отправлено!"
+                        self.status_label.color = (0, 1, 0, 1)
+                    else:
+                        self.status_label.text = f"❌ Ошибка сервера: {response.status}"
+                        self.status_label.color = (1, 0, 0, 1)
             except Exception as e:
                 self.status_label.text = f"❌ Нет связи с ПК"
                 self.status_label.color = (1, 0, 0, 1)
