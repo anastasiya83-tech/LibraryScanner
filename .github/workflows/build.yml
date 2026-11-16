@@ -23,6 +23,7 @@ jobs:
       - name: Build with Buildozer
         run: |
           rm -rf .buildozer
+          pip install "python-for-android==2024.1.21"
           buildozer -v android debug
           
       - name: Upload APK
