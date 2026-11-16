@@ -5,7 +5,7 @@ package.domain = org.test
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
-requirements = python3,kivy,plyer,openssl
+requirements = python3,kivy,openssl
 orientation = portrait
 fullscreen = 1
 
@@ -15,11 +15,6 @@ android.minapi = 21
 android.ndk = 25b
 android.ndk_api = 21
 android.accept_sdk_license = True
-android.extra_manifest_application_attrs = android:usesCleartextTraffic="true"
-
-# Добавьте эту строку для актуальных рецептов p4a
-p4a.branch = develop
-
 android.release_artifact = apk
 android.debug_artifact = apk
 
